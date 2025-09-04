@@ -65,22 +65,16 @@ public class SecurityConfig {
                 .requestMatchers("/api/restaurants/**").permitAll()             // Restaurants - PUBLIC  
                 .requestMatchers("/api/menu-items/**").permitAll()              // Menu items - PUBLIC
                 
-                // Development endpoints
-                .requestMatchers("/h2-console/**").permitAll()
-                .requestMatchers("/swagger-ui/**").permitAll()
-                .requestMatchers("/v3/api-docs/**").permitAll()
-                .requestMatchers("/actuator/**").permitAll()
-                
-                // CORS preflight requests
-                .requestMatchers("OPTIONS", "/**").permitAll()
+              
                 
                 // ===== PROTECTED ENDPOINTS (AUTHENTICATION REQUIRED) =====
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")              // Admin only
                 .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")    // User endpoints
                 .requestMatchers("/api/orders/**").authenticated()              // Orders need auth
                 .requestMatchers("/api/payments/**").authenticated()            // Payments need auth
-                .requestMatchers("/api/profile/**").authenticated()             // Profile need auth
-                
+                .requestMatchers("/api/profile/**").authenticated()
+                .requestMatchers("/api/stripe/create-payment-sheet").authenticated()             // Stripe payment sheet need auth
+
                 // All other requests need authentication
                 .anyRequest().authenticated()
             );
